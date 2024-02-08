@@ -44,7 +44,7 @@ namespace MECANOGRAFIA.clases
             MessageBox.Show(msg, titulo);
         }
 
-        public void Info(string msg, string titulo = "INFO")
+        public void Info(string msg, string titulo = "INFORMACION")
         {
             MessageBoxButtons boton = MessageBoxButtons.OK;
             MessageBoxIcon icono = MessageBoxIcon.Information;

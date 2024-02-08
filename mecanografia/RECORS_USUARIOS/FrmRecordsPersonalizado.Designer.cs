@@ -180,25 +180,21 @@
             this.label2.Location = new System.Drawing.Point(6, 359);
             this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(226, 16);
+            this.label2.Size = new System.Drawing.Size(293, 16);
             this.label2.TabIndex = 28;
-            this.label2.Text = "Seleccione el Record de Dificultad";
+            this.label2.Text = "Seleccione el Record de Texto personalizado";
             // 
             // CMBpersonalizado
             // 
             this.CMBpersonalizado.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.CMBpersonalizado.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.CMBpersonalizado.FormattingEnabled = true;
-            this.CMBpersonalizado.Items.AddRange(new object[] {
-            "FACIL",
-            "INTERMEDIO",
-            "DIFICIL"});
             this.CMBpersonalizado.Location = new System.Drawing.Point(10, 380);
             this.CMBpersonalizado.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.CMBpersonalizado.Name = "CMBpersonalizado";
-            this.CMBpersonalizado.Size = new System.Drawing.Size(139, 23);
+            this.CMBpersonalizado.Size = new System.Drawing.Size(280, 23);
             this.CMBpersonalizado.TabIndex = 27;
-            this.CMBpersonalizado.SelectedIndexChanged += new System.EventHandler(this.CMBdificultades_SelectedIndexChanged);
+            this.CMBpersonalizado.SelectedIndexChanged += new System.EventHandler(this.CMBpersonalizado_SelectedIndexChanged);
             // 
             // btnicio
             // 

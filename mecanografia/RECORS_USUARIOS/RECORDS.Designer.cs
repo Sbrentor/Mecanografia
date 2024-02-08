@@ -52,7 +52,10 @@
             // 
             // btnicio
             // 
-            this.btnicio.Location = new System.Drawing.Point(283, 6);
+            this.btnicio.FlatAppearance.BorderSize = 0;
+            this.btnicio.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnicio.ForeColor = System.Drawing.Color.White;
+            this.btnicio.Location = new System.Drawing.Point(572, 4);
             this.btnicio.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.btnicio.Name = "btnicio";
             this.btnicio.Size = new System.Drawing.Size(88, 27);

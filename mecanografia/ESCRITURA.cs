@@ -1,7 +1,6 @@
 ﻿using MECANOGRAFIA.Properties;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.IO;
@@ -9,8 +8,6 @@ using System.Linq;
 using System.Net;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-using System.Security.Cryptography;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Timers;
@@ -24,13 +21,29 @@ namespace MECANOGRAFIA.mecanografia
         clases.helpers h = new clases.helpers();
         clases.ENV env = new clases.ENV();
         clases.auth a = new clases.auth();
-        int correctas = 0, incorrectas = 0, pcompletadas = 0, L_omitidas = 0, L_PosM = 0, L_added = 0, i, j, dias_seguido = 0;
+        int correctas = 0, incorrectas, pcompletadas = 0, L_omitidas = 0, L_PosM = 0, L_added = 0, i, j, dias_seguido = 0;
         public string usuario_sesion = "";
         string tabla, campos, valores, condicion, msg, p, p_escrita;
 
         public ESCRITURA()
         {
             InitializeComponent();
+        }
+
+        private void SaveWrongWords()
+        {
+            if(usuario_sesion != string.Empty) if(WrongWords() == 1) DB.guardar("LISTA_P_M_E", "USUARIO,P_MAL_E",$"'{usuario_sesion}','{txtpalabrasescritas.Text.Trim()}'");
+        }
+
+        private Int16 WrongWords()
+        {
+            Int16 res = 0;
+            List<string> palabras = new List<string>(txtpalabrasmostradas.Text.Trim().Split(' '));
+            string palabra_mostrada = palabras[0];
+
+            if (txtpalabrasescritas.Text.Trim().Length == palabra_mostrada.Length || txtpalabrasescritas.Text.Trim().Length != palabra_mostrada.Length) if (txtpalabrasescritas.Text.Trim() != palabra_mostrada) res = 1;
+
+            return res;
         }
 
         private void LetterAddedWrongly()
@@ -83,8 +96,7 @@ namespace MECANOGRAFIA.mecanografia
             string[] words = { "casa", "perro", "gato", "sol", "luna", "árbol", "flor", "mesa", "silla", "coche", "amarillo", "rojo", "verde", "azul", "feliz", "triste", "amor", "odio", "jugar", "correr", "comer", "dormir", "agua", "fuego", "nieve", "tierra", "aire", "soltero", "casado", "niño", "niña", "escuela", "libro", "maestro", "estudiante", "cielo", "nube", "montaña", "río", "mar", "lago", "ciudad", "país", "musica", "baile", "pintura", "dibujo", "pelota", "juego", "risa", "llanto", "familia", "amigo", "hermano", "hermana", "padre", "madre", "abuelo", "abuela", "comida", "bebida", "manzana", "naranja", "banana", "uva", "pollo", "pescado", "carne", "vegetal", "fruta", "computadora", "teléfono", "internet", "television", "radio", "calle", "avenida", "parque", "bosque", "camino", "viaje", "avión", "tren", "autobús", "bicicleta", "caminar", "correr", "nadar", "viajar", "trabajo", "dinero", "compra", "venta", "mercado", "tienda", "ropa", "zapatos", "camisa", "película", "teatro", "arte", "historia", "ciencia", "idioma", "palabra", "frase", "párrafo", "número", "letra", "color", "forma", "tamaño", "peso", "altura", "ancho", "largo", "corto", "rápido", "lento", "fuerte", "débil", "alto", "bajo", "grande", "pequeño", "nuevo", "viejo", "bueno", "malo", "amable", "cruel", "feliz", "triste", "fácil", "difícil", "claro", "oscuro", "caliente", "frío", "rico", "pobre", "limpio", "sucio", "salud", "paz", "guerra", "educación", "trabajador", "dormitorio", "peluche", "lápiz", "nube", "teléfono", "silla", "bicicleta", "deporte", "reloj", "calendario", "periódico", "ventana", "puerta", "llave", "candado", "jardín", "mañana", "tarde", "noche", "verano", "invierno", "otoño", "relación", "romance", "teclado", "mouse", "pantalla", "luz", "energía", "gas", "aire", "respirar", "sonrisa", "dentista", "cabello", "cepillo", "espejo", "perfume", "música", "radio", "melodía", "piano", "violín", "juego", "carta", "dado", "moneda", "billete", "cambio", "comida", "bebida", "cuchillo", "tenedor", "cuchara", "plato", "vaso", "taza", "cena", "almuerzo", "desayuno", "bolsa", "zapatos", "botas", "sombrero", "gorro", "bufanda", "guantes", "abrigo", "falda", "camiseta", "calcetines", "zapatillas", "cine", "película", "escena", "actor", "actriz", "director", "guion", "cámara", "fotografía", "pintura", "lienzo", "colores", "pincel", "forma", "espacio", "tiempo", "reloj", "arena", "océano", "isla", "costa", "montaña", "valle", "cima", "abismo", "pasaporte", "frontera", "viaje", "turista", "hotel", "cama", "almohada", "cobija", "sueño", "pesadilla", "vuelo", "aeropuerto", "boleto", "avión", "autobús", "tren", "estación", "automóvil", "bicicleta", "caminata", "excursión", "aventura", "explorar", "descubrir", "viaje", "destino", "mapa", "brújula", "norte", "sur", "este", "oeste", "flecha", "señal", "tráfico", "peatón", "vehículo", "carretera", "calle", "avenida", "trabajo", "oficina", "jefe", "empleado", "colega", "negocio", "éxito", "fracaso", "metas", "logro", "proyecto", "equipo", "reunión", "cliente", "producto", "servicio", "venta", "sol", "luna", "cielo", "mar", "montaña", "árbol", "flor", "río", "nieve", "viento", "animal", "perro", "gato", "pez", "pájaro", "oso", "casa", "calle", "coche", "bicicleta", "comida", "manzana", "pan", "queso", "leche", "agua", "carne", "fruta", "verdura", "arroz", "juego", "pelota", "muñeca", "juguete", "canción", "música", "baile", "libro", "letra", "número", "color", "rojo", "azul", "verde", "amarillo", "blanco", "negro", "gris", "naranja", "rosa", "día", "noche", "hora", "minuto", "segundo", "mes", "año", "ayer", "hoy", "mañana", "feliz", "triste", "enojado", "asustado", "sorpresa", "contento", "aburrido", "cansado", "dormir", "despertar", "trabajo", "estudio", "escuela", "maestro", "alumno", "clase", "proyecto", "tarea", "examen", "respuesta", "deporte", "fútbol", "baloncesto", "natación", "carrera", "ejercicio", "salud", "medicina", "doctor", "hospital", "ropa", "camisa", "pantalón", "zapatos", "sombrero", "chaqueta", "abrigo", "vestido", "calcetines", "ropa", "interior", "calzado", "tecnología", "teléfono", "computadora", "internet", "aplicación", "mensaje", "correo", "redes", " sociales", "cámara", "pantalla", "viaje", "avión", "coche", "tren", "barco", "hotel", "vacaciones", "turista", "mapa", "guía", "familia", "padre", "madre", "hermano", "hermana", "abuelo", "abuela", "hijo", "hija", "niño", "niña", "cariño", "amigo", "amiga", "amor", "beso", "abrazo", "risa", "llanto", "fiesta", "regalo", "podemos", "entonces", "cosas", "años", "porque", "sin", "un", "ella", "porque", "estas", "me", "hasta", "yo", "tiempo" };
 
             Random randomwords = new Random();
-            for (int i = words.Length - 1; i > 0; i--)
-            {
+            for (int i = words.Length - 1; i > 0; i--){
                 int j = randomwords.Next(0, i + 1);
                 string temp = words[i];
                 words[i] = words[j];
@@ -99,8 +111,7 @@ namespace MECANOGRAFIA.mecanografia
             string palabra_mostrada = palabras[0],
             palabra_escrita = txtpalabrasescritas.Text.Trim();
 
-            if (palabra_escrita.Length == palabra_mostrada.Length || palabra_escrita.Length != palabra_mostrada.Length)
-            {
+            if (palabra_escrita.Length == palabra_mostrada.Length || palabra_escrita.Length != palabra_mostrada.Length){
                 if (palabra_escrita == palabra_mostrada) correctas++;
                 else incorrectas++;
 
@@ -113,15 +124,12 @@ namespace MECANOGRAFIA.mecanografia
         private int validar_sesion()
         {
             int res = 0;
-            if (txtusuario_sesion.Text.Length == 0 && CBusuario.Text.Length == 0)
-            {
+            if (txtusuario_sesion.Text.Length == 0 && CBusuario.Visible == false){
                 h.Warning("el usuario es obligatorio");
                 txtusuario.Focus();
                 res++;
-            }
-            else if (txtcontra_sesion.Text.Length == 0 && txtusuario_sesion.Text.Length == 0)
-            {
-                h.Warning("la contraseña es obligatoria y usuario son obligatorios");
+            }else if (txtcontra_sesion.Text.Length == 0 ){
+                h.Warning("la contraseña es obligatoria");
                 txtcontra.Focus();
                 res++;
             }
@@ -131,14 +139,11 @@ namespace MECANOGRAFIA.mecanografia
         private int validar_registro()
         {
             int res = 0;
-            if (txtcontra.Text.Length == 0)
-            {
+            if (txtcontra.Text.Length == 0){
                 h.Warning("la contraseña es obligatoria");
                 txtcontra.Focus();
                 res++;
-            }
-            else if (txtusuario.Text.Length == 0)
-            {
+            }else if (txtusuario.Text.Length == 0){
                 h.Warning("el usuario es obligatorio");
                 txtusuario.Focus();
                 res++;
@@ -149,9 +154,9 @@ namespace MECANOGRAFIA.mecanografia
 
         private void cargarformulario()
         {
-            this.Size = new Size(628, 381);
+            this.Size = new Size(621, 366);
             this.P_ESCRITURA.Location = new Point(3, 3);
-            P_ESCRITURA.Size = new Size(602, 296);
+            P_ESCRITURA.Size = new Size(602, 297);
             this.Text = env.APPNAME;
             lista_palabras();
             txtpalabrasescritas.Enabled = false;
@@ -164,110 +169,91 @@ namespace MECANOGRAFIA.mecanografia
 
         private void cambiarmodos()
         {
-            if (P_OFF.BackColor == Color.Red)
-            {
+            if (P_OFF.BackColor == Color.Red){
                 P_ON.BackColor = Color.Green;
                 P_OFF.BackColor = Color.Gray;
 
-                lblSEGUNDOS.BackColor = Color.Black;
-                lblSEGUNDOS.ForeColor = Color.White;
-                lblINCIAR_SESION.BackColor = Color.Black;
-                lblINCIAR_SESION.ForeColor = Color.White;
-                lbl1.BackColor = Color.Black;
-                lbl1.ForeColor = Color.White;
-                lbl3.BackColor = Color.Black;
-                lbl3.ForeColor = Color.White;
-                lbl4.BackColor = Color.Black;
-                lbl4.ForeColor = Color.White;
-                lbl5.BackColor = Color.Black;
-                lbl5.ForeColor = Color.White;
-                lbl6.BackColor = Color.Black;
-                lbl6.ForeColor = Color.White;
+                lblSEGUNDOS.BackColor = Color.Black; lblSEGUNDOS.ForeColor = Color.White;
+                lblINCIAR_SESION.BackColor = Color.Black; lblINCIAR_SESION.ForeColor = Color.White;
+                lbl1.BackColor = Color.Black; lbl1.ForeColor = Color.White;
+                lbl3.BackColor = Color.Black; lbl3.ForeColor = Color.White;
+                lbl4.BackColor = Color.Black; lbl4.ForeColor = Color.White;
+                lbl5.BackColor = Color.Black; lbl5.ForeColor = Color.White;
+                lbl6.BackColor = Color.Black; lbl6.ForeColor = Color.White;
 
-                button1.BackColor = Color.Black;
-                button1.ForeColor = Color.White;
+                button1.BackColor = Color.Black; button1.ForeColor = Color.White;
 
-                btnIniciar.BackColor = Color.White;
-                btnIniciar.ForeColor = Color.Black;
-                btnreiniciar.BackColor = Color.White;
-                btnreiniciar.ForeColor = Color.Black;
+                btnIniciar.BackColor = Color.Black; btnIniciar.ForeColor = Color.Black;
+                btnreiniciar.BackColor = Color.Black; btnreiniciar.ForeColor = Color.Black;
 
-                btncancelar.BackColor = Color.Black;
-                btncancelar.ForeColor = Color.White;
-                btnentrar_REGISTRO.BackColor = Color.Black;
-                btnentrar_REGISTRO.ForeColor = Color.White;
-                btnentrar_INCIOSESION.BackColor = Color.Black;
-                btnentrar_INCIOSESION.ForeColor = Color.White;
-                btncancelar_sesion.BackColor = Color.Black;
-                btncancelar_sesion.ForeColor = Color.White;
-                btnver.BackColor = Color.Black;
-                btnver.ForeColor = Color.White;
-                btnverSesion.BackColor = Color.Black;
-                btnverSesion.ForeColor = Color.White;
-                btnVolverAEscritura.BackColor = Color.Black;
-                btnVolverAEscritura.ForeColor = Color.White;
-                btnVolverASesion.BackColor = Color.Black;
-                btnVolverASesion.ForeColor = Color.White;
-                foreach (TextBox txt in this.Controls.OfType<TextBox>()) { txt.BackColor = Color.Black; txt.ForeColor = Color.White; }
-                lvPalabras.BackColor = Color.Black; lvPalabras.ForeColor = Color.Black;
-                this.BackColor = Color.Black;
-                this.ForeColor = Color.White;
+                btncancelar.BackColor = Color.Black; btncancelar.ForeColor = Color.White;
+                btnentrar_REGISTRO.BackColor = Color.Black; btnentrar_REGISTRO.ForeColor = Color.White;
+                btnentrar_INCIOSESION.BackColor = Color.Black; btnentrar_INCIOSESION.ForeColor = Color.White;
+                btncancelar_sesion.BackColor = Color.Black; btncancelar_sesion.ForeColor = Color.White;
+                btnver.BackColor = Color.Black; btnver.ForeColor = Color.White;
+                btnverSesion.BackColor = Color.Black; btnverSesion.ForeColor = Color.White;
+                btnVolverAEscritura.BackColor = Color.Black; btnVolverAEscritura.ForeColor = Color.White;
+                btnVolverASesion.BackColor = Color.Black; btnVolverASesion.ForeColor = Color.White;
+                
+                txtpalabrasescritas.BackColor = Color.Black; txtpalabrasescritas.ForeColor = Color.White; 
+                txtpalabrasmostradas.BackColor = Color.Black; txtpalabrasmostradas.ForeColor = Color.White;
+                txtcontra.BackColor = Color.Black; txtcontra.ForeColor = Color.White;
+                txtcontra_sesion.BackColor = Color.Black; txtcontra_sesion.ForeColor = Color.White;
+                txtusuario.BackColor = Color.Black; txtusuario.ForeColor = Color.White;
+                txtusuario_sesion.BackColor = Color.Black; txtusuario_sesion.ForeColor = Color.White;
 
-                lblINCIAR_SESION.ForeColor = Color.Blue;
-                lblINCIAR_SESION.BackColor = Color.White;
+                CBusuario.BackColor = Color.Black; CBusuario.ForeColor = Color.White;
+
+                lvPalabras.BackColor = Color.Black; lvPalabras.ForeColor = Color.White;
+                this.BackColor = Color.Black; this.ForeColor = Color.White;
+
+                P_ESCRITURA.BackColor = Color.Black;
+                P_INICIOSESION.BackColor = Color.Black;
+                P_REGISTRO.BackColor = Color.Black;
+                panel1.BackColor = Color.Black;
+
+                lblINCIAR_SESION.ForeColor = Color.White; lblINCIAR_SESION.BackColor = Color.Black;
                 MenuOpciones.ForeColor = Color.Black;
-
-            }
-            else if (P_ON.BackColor == Color.Green)
-            {
+            }else if (P_ON.BackColor == Color.Green){
                 P_ON.BackColor = Color.Gray;
                 P_OFF.BackColor = Color.Red;
 
-                lblSEGUNDOS.BackColor = Color.White;
-                lblSEGUNDOS.ForeColor = Color.Black;
-                lblINCIAR_SESION.BackColor = Color.White;
-                lblINCIAR_SESION.ForeColor = Color.Blue;
-                lbl1.BackColor = Color.White;
-                lbl1.ForeColor = Color.Black;
-                lbl3.BackColor = Color.White;
-                lbl3.ForeColor = Color.Black;
-                lbl4.BackColor = Color.White;
-                lbl4.ForeColor = Color.Black;
-                lbl5.BackColor = Color.White;
-                lbl5.ForeColor = Color.Black;
-                lbl6.BackColor = Color.White;
-                lbl6.ForeColor = Color.Black;
+                lblSEGUNDOS.BackColor = Color.Navy; lblSEGUNDOS.ForeColor = Color.White;
+                lblINCIAR_SESION.BackColor = Color.Navy; lblINCIAR_SESION.ForeColor = Color.White;
+                lbl1.BackColor = Color.Navy; lbl1.ForeColor = Color.White;
+                lbl3.BackColor = Color.Navy; lbl3.ForeColor = Color.White;
+                lbl4.BackColor = Color.Navy; lbl4.ForeColor = Color.White;
+                lbl5.BackColor = Color.Navy; lbl5.ForeColor = Color.White; 
+                lbl6.BackColor = Color.Navy; lbl6.ForeColor = Color.White;
 
-                button1.BackColor = Color.White;
-                button1.ForeColor = Color.Black;
+                button1.BackColor = Color.Navy; button1.ForeColor = Color.White;
 
-                btnIniciar.BackColor = Color.White;
-                btnIniciar.ForeColor = Color.Black;
-                btnreiniciar.BackColor = Color.White;
-                btnreiniciar.ForeColor = Color.Black;
-                btncancelar.BackColor = Color.White;
-                btncancelar.ForeColor = Color.Black;
-                btnentrar_REGISTRO.BackColor = Color.White;
-                btnentrar_REGISTRO.ForeColor = Color.Black;
-                btnentrar_INCIOSESION.BackColor = Color.White;
-                btnentrar_INCIOSESION.ForeColor = Color.Black;
-                btncancelar_sesion.BackColor = Color.White;
-                btncancelar_sesion.ForeColor = Color.Black;
-                btnver.BackColor = Color.White;
-                btnver.ForeColor = Color.Black;
-                btnverSesion.BackColor = Color.White;
-                btnverSesion.ForeColor = Color.Black;
-                btnVolverAEscritura.BackColor = Color.White;
-                btnVolverAEscritura.ForeColor = Color.Black;
-                btnVolverASesion.BackColor = Color.White;
-                btnVolverASesion.ForeColor = Color.Black;
+                btnIniciar.BackColor = Color.Navy; btnIniciar.ForeColor = Color.White;
+                btnreiniciar.BackColor = Color.Navy; btnreiniciar.ForeColor = Color.White;
+                btncancelar.BackColor = Color.Navy; btncancelar.ForeColor = Color.White;
+                btnentrar_REGISTRO.BackColor = Color.Navy; btnentrar_REGISTRO.ForeColor = Color.White; 
+                btnentrar_INCIOSESION.BackColor = Color.Navy; btnentrar_INCIOSESION.ForeColor = Color.White;
+                btncancelar_sesion.BackColor = Color.Navy; btncancelar_sesion.ForeColor = Color.White;
+                btnver.BackColor = Color.Navy; btnverSesion.BackColor = Color.Navy;
+                btnVolverAEscritura.BackColor = Color.Navy; btnVolverASesion.BackColor = Color.Navy;
 
-                foreach (TextBox txt in this.Controls.OfType<TextBox>()) { txt.BackColor = Color.White; txt.ForeColor = Color.Black; }
-                lvPalabras.BackColor = Color.White; lvPalabras.ForeColor = Color.Black;
-                this.BackColor = Color.CadetBlue;
-                this.ForeColor = Color.Black;
+                txtpalabrasescritas.ForeColor = Color.Black; txtpalabrasescritas.BackColor = Color.Navy;
+                txtpalabrasmostradas.BackColor = Color.Navy; txtpalabrasmostradas.ForeColor = Color.White;
+                txtusuario.BackColor = Color.Navy; txtusuario.ForeColor = Color.White;
+                txtcontra.BackColor = Color.Navy; txtcontra.ForeColor = Color.White;
+                txtusuario_sesion.BackColor = Color.Navy; txtusuario_sesion.ForeColor = Color.White;
+                txtcontra_sesion.BackColor = Color.Navy; txtcontra_sesion.ForeColor = Color.White;
 
-                lblINCIAR_SESION.ForeColor = Color.Blue;
+                CBusuario.BackColor = Color.Navy; CBusuario.ForeColor = Color.White;
+
+                lvPalabras.BackColor = Color.SteelBlue; lvPalabras.ForeColor = Color.Black;
+                this.BackColor = Color.Navy; this.ForeColor = Color.Black;
+
+                lblINCIAR_SESION.ForeColor = Color.White;
+                P_ESCRITURA.BackColor = Color.Navy;
+                P_INICIOSESION.BackColor = Color.Navy;
+                P_REGISTRO.BackColor = Color.Navy;
+                panel1.BackColor = Color.Navy;
             }
         }
 
@@ -276,54 +262,87 @@ namespace MECANOGRAFIA.mecanografia
             cargarformulario();
         }
 
+        private void txtpalabrasescritas_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Space){
+                WrongLetterPosition();
+                SkippedLetters();
+                LetterAddedWrongly();
+                WrongWords();
+                SaveWrongWords();
+                verificar_palabras();
+                txtpalabrasescritas.Clear();
+            }
+        }
+
         private void RELOJ_Tick(object sender, EventArgs e)
         {
             int conteo = Convert.ToInt32(lblSEGUNDOS.Text);
             conteo--;
             lblSEGUNDOS.Text = conteo.ToString();
-            
 
-            if (conteo == 0)
-            {
+            if (conteo == 45 && pcompletadas == 0){
                 RELOJ.Stop();
-                MessageBox.Show("!Se ha agotado el tiempo!");
-
-                ListViewItem item = item = lvPalabras.Items.Add(pcompletadas.ToString());
-                item.SubItems.Add(correctas.ToString());
-                item.SubItems.Add(incorrectas.ToString());
-                item.SubItems.Add(Math.Round(((float)correctas / pcompletadas) * 100, 3).ToString() + "%");
-                item.SubItems.Add(L_omitidas.ToString());
-                item.SubItems.Add(L_PosM.ToString());
-                item.SubItems.Add(L_added.ToString());
-
+                h.Info("Te encuentras lejos del teclado?");
                 txtpalabrasescritas.Clear();
                 lblSEGUNDOS.Text = "60";
-                if (usuario_sesion == "") btnIniciar.Enabled = true;
-                else
-                {
-                    btnIniciar.Enabled = false;
-                    btnreiniciar.Enabled = true;
-                }
+                btnIniciar.Enabled = false;
+                btnreiniciar.Enabled = true;
                 txtpalabrasescritas.Enabled = false;
                 lblINCIAR_SESION.Enabled = true;
+                lblregistro.Enabled = true;
                 MenuOpciones.Enabled = true;
+                button1.Enabled = true;
+            }else if (incorrectas == 10){
+                RELOJ.Stop();
+                h.Warning("!Demasiadas palabras incorrectas!");
+                txtpalabrasescritas.Clear();
+                lblSEGUNDOS.Text = "60";
+                btnreiniciar.Enabled = true;
+                txtpalabrasescritas.Enabled = false;
+                lblINCIAR_SESION.Enabled = true;
+                lblregistro.Enabled = true;
+                MenuOpciones.Enabled = true;
+                button1.Enabled = true;
+            }
+            else {
+                if (conteo == 0){
+                    RELOJ.Stop();
+                    MessageBox.Show("!Se ha agotado el tiempo!");
 
-                string ppm = "", pc = "", pi = "", Lomitida = "", LPosM = "", LAddedM = "";
-                foreach (ListViewItem datosLV in lvPalabras.Items)
-                {
-                    ppm = datosLV.SubItems[0].Text;
-                    pc = datosLV.SubItems[1].Text;
-                    pi = datosLV.SubItems[2].Text;
-                    Lomitida = datosLV.SubItems[4].Text;
-                    LPosM = datosLV.SubItems[5].Text;
-                    LAddedM = datosLV.SubItems[6].Text;
-                }
+                    ListViewItem item = item = lvPalabras.Items.Add(pcompletadas.ToString());
+                    item.SubItems.Add(correctas.ToString());
+                    item.SubItems.Add(incorrectas.ToString());
+                    item.SubItems.Add(Math.Round(((float)correctas / pcompletadas) * 100, 3).ToString() + "%");
+                    item.SubItems.Add(L_omitidas.ToString());
+                    item.SubItems.Add(L_PosM.ToString());
+                    item.SubItems.Add(L_added.ToString());
 
-                if (usuario_sesion != "")
-                {
-                    DB.guardar("RECORDS_USUARIOS", "USUARIO,PALABRAS_POR_MINUTO,PALABRAS_CORRECTAS,PALABRAS_INCORRECTAS,PRECISION,L_O,L_POS_M,L_ADDED_M", $"'{usuario_sesion}','{ppm}','{pc}','{pi}','{Convert.ToDouble(Math.Round(((float)correctas / pcompletadas) * 100, 3)) + "%"}','{Lomitida}','{LPosM}','{LAddedM}'");
-                    registry_achievments(ppm);
-                    registry_achievments_C(pc);
+                    txtpalabrasescritas.Clear();
+                    lblSEGUNDOS.Text = "60";
+                    btnIniciar.Enabled = false;
+                    btnreiniciar.Enabled = true;
+                    txtpalabrasescritas.Enabled = false;
+                    lblINCIAR_SESION.Enabled = true;
+                    lblregistro.Enabled = true;
+                    MenuOpciones.Enabled = true;
+                    button1.Enabled = true;
+
+                    string ppm = "", pc = "", pi = "", Lomitida = "", LPosM = "", LAddedM = "";
+                    foreach (ListViewItem datosLV in lvPalabras.Items){
+                        ppm = datosLV.SubItems[0].Text;
+                        pc = datosLV.SubItems[1].Text;
+                        pi = datosLV.SubItems[2].Text;
+                        Lomitida = datosLV.SubItems[4].Text;
+                        LPosM = datosLV.SubItems[5].Text;
+                        LAddedM = datosLV.SubItems[6].Text;
+                    }
+
+                    if (usuario_sesion != ""){
+                        DB.guardar("RECORDS_USUARIOS", "USUARIO,PALABRAS_POR_MINUTO,PALABRAS_CORRECTAS,PALABRAS_INCORRECTAS,PRECISION,L_O,L_POS_M,L_ADDED_M", $"'{usuario_sesion}','{ppm}','{pc}','{pi}','{Convert.ToDouble(Math.Round(((float)correctas / pcompletadas) * 100, 3)) + "%"}','{Lomitida}','{LPosM}','{LAddedM}'");
+                        registry_achievments(ppm);
+                        registry_achievments_C(pc);
+                    }
                 }
             }
         }
@@ -356,7 +375,6 @@ namespace MECANOGRAFIA.mecanografia
         {
             DataTable datos = DB.recuperar("LOGROS_USUARIOS","*",$"CANT = 10 AND LOGRO = 'PPM' AND USUARIO = '{usuario_sesion}'");
             if (datos.Rows.Count == 0) if (Convert.ToInt32(ppm) >= 10) DB.guardar("LOGROS_USUARIOS", "USUARIO,LOGRO,CANT", $"'{usuario_sesion}','PPM',{10}");
-            
             datos = DB.recuperar("LOGROS_USUARIOS", "*", $"CANT = 20 AND LOGRO = 'PPM'  AND USUARIO =  '{usuario_sesion}'");
             if (datos.Rows.Count == 0) if (Convert.ToInt32(ppm) >= 20) DB.guardar("LOGROS_USUARIOS", "USUARIO,LOGRO,CANT", $"'{usuario_sesion}','PPM',{20}");
             datos = DB.recuperar("LOGROS_USUARIOS", "*", $"CANT = 30 AND LOGRO = 'PPM'  AND USUARIO =  '{usuario_sesion}'");
@@ -387,27 +405,25 @@ namespace MECANOGRAFIA.mecanografia
         private void lblINCIAR_SESION_Click(object sender, EventArgs e)
         {
             DataTable datos = DB.recuperar("USUARIOS", "*");
-            if (usuario_sesion == "")
-            {
+            if (usuario_sesion == ""){
                 P_ESCRITURA.Visible = false;
                 P_INICIOSESION.Visible = true;
                 lvPalabras.Items.Clear();
                 this.Text = " INICIO DE SESION ";
                 MenuOpciones.Enabled = false;
+                RDno.Checked = true;
+                RDsi.Checked = false;
 
                 P_INICIOSESION.Size = new Size(324, 244);
                 CBusuario.Visible = false;
                 P_INICIOSESION.Location = new Point(-0, -2);
-                this.Size = new Size(340, 320);
+                this.Size = new Size(340, 310);
                 this.FormBorderStyle = FormBorderStyle.FixedToolWindow;
                 if (datos.Rows.Count > 0) { RDno.Enabled = true; RDsi.Enabled = true; }
                 else { RDno.Enabled = false; RDsi.Enabled = false; }
-            }
-            else
-            {
+            }else{
                 msg = "¿Desea Cerrar Sesion?";
-                if (h.Question(msg) == true)
-                {
+                if (h.Question(msg) == true){
                     usuario_sesion = "";
                     lvPalabras.Items.Clear();
                     P_ESCRITURA.Visible = false;
@@ -416,11 +432,13 @@ namespace MECANOGRAFIA.mecanografia
                     MenuOpciones.Enabled = false;
                     btnreiniciar.Enabled = false;
                     btnIniciar.Enabled = true;
+                    RDno.Checked = true;
+                    RDsi.Checked = false;
 
                     P_INICIOSESION.Size = new Size(324, 244);
                     CBusuario.Visible = false;
                     P_INICIOSESION.Location = new Point(-0, -2);
-                    this.Size = new Size(340, 320);
+                    this.Size = new Size(340, 310);
                     this.FormBorderStyle = FormBorderStyle.FixedToolWindow;
                     if (datos.Rows.Count > 0) { RDno.Enabled = true; RDsi.Enabled = true; }
                     else { RDno.Enabled = false; RDsi.Enabled = false; }
@@ -440,7 +458,8 @@ namespace MECANOGRAFIA.mecanografia
             correctas = 0;incorrectas = 0;pcompletadas = 0;L_omitidas = 0; L_PosM = 0; L_added = 0;
             lvPalabras.Items.Clear();
             lblINCIAR_SESION.Enabled = false;
-            lblINCIAR_SESION.BackColor = Color.White;
+            lblregistro.Enabled = false;
+            button1.Enabled = false;
             RELOJ.Start();
         }
 
@@ -451,30 +470,25 @@ namespace MECANOGRAFIA.mecanografia
 
         private void btnentrar_REGISTRO_Click(object sender, EventArgs e)
         {
-            if (validar_registro() == 0)
-            {
+            if (validar_registro() == 0){
                 tabla = "USUARIOS";
                 campos = $"USUARIO,NAME_PC,CONTRA";
                 valores = $"'{h.CleanSQL(txtusuario.Text.Trim())}','{Dns.GetHostName()}','{a.MakeHash(txtcontra.Text)}'";
                 condicion = $"USUARIO = '{txtusuario.Text.Trim()}'";
                 DataTable datos = DB.recuperar(tabla, "*", condicion);
 
-                if (datos.Rows.Count > 0)
-                {
+                if (datos.Rows.Count > 0){
                     h.Warning("El usuario " + txtusuario.Text.Trim() + " ya existe ingrese otro");
                     txtusuario.Focus();
                 }
-                else
-                {
-                    if (DB.guardar(tabla, campos, valores) > 0)
-                    {
+                else{
+                    if (DB.guardar(tabla, campos, valores) > 0){
                         h.Succes("Se ha registrado con exito");
                         MenuOpciones.Enabled = true;
                         usuario_sesion = txtusuario.Text;
 
                         DataTable d = DB.recuperar("RACHA_USUARIOS_DS", "*", $"USUARIO = '{usuario_sesion}'");
-                        if (d.Rows.Count == 0)
-                        {
+                        if (d.Rows.Count == 0){
                             dias_seguido++;
                             DB.guardar("RACHA_USUARIOS_DS", "USUARIO,DIAS_S", $"'{usuario_sesion}','{dias_seguido}'");
                         }
@@ -487,7 +501,7 @@ namespace MECANOGRAFIA.mecanografia
                         txtcontra.Clear();
                         txtusuario.Clear();
 
-                        this.Size = new Size(628, 381);
+                        this.Size = new Size(621, 366);
                         MenuOpciones.Visible = true;
                         this.FormBorderStyle = FormBorderStyle.FixedSingle;
                     }
@@ -497,8 +511,7 @@ namespace MECANOGRAFIA.mecanografia
 
         private void btncancelar_Click(object sender, EventArgs e)
         {
-            txtusuario.Clear();
-            txtcontra.Clear();
+            txtusuario.Clear(); txtcontra.Clear();
         }
 
         private void btnver_Click(object sender, EventArgs e)
@@ -535,15 +548,12 @@ namespace MECANOGRAFIA.mecanografia
                             usuario_sesion = CBusuario.Text;
                         }
 
-                        if (usuario_sesion != "")
-                        {
+                        if (usuario_sesion != ""){
                             DataTable d_seguidos = DB.recuperar("RACHA_USUARIOS_DS", "*", $"USUARIO = '{usuario_sesion}'");
-                            if (d_seguidos.Rows.Count > 0)
-                            {
+                            if (d_seguidos.Rows.Count > 0){
                                 DateTime fec_registro_usuario;
                                 int fec = DateTime.Today.Day;
-                                foreach (DataRow row in d_seguidos.Rows)
-                                {
+                                foreach (DataRow row in d_seguidos.Rows){
                                     fec_registro_usuario = Convert.ToDateTime(row["FECHA"]);
                                     dias_seguido = Convert.ToInt32(row["DIAS_S"]);
                                     if (fec_registro_usuario.Date.Day == fec) break;
@@ -557,9 +567,7 @@ namespace MECANOGRAFIA.mecanografia
                                         dias_seguido = 0;
                                         DB.actualizar("RACHA_USUARIOS_DS", $"DIAS_S = '{dias_seguido}',FECHA = '{DateTime.Today}'", $"USUARIO = '{usuario_sesion}'");
                                         h.Info($"Tu racha se acabado");
-                                    }
-                                    else if (fec_registro_usuario.Date.Day < fec || fec_registro_usuario.Date.Day > fec)
-                                    {
+                                    }else if (fec_registro_usuario.Date.Day < fec || fec_registro_usuario.Date.Day > fec){
                                         dias_seguido++;
                                         DB.actualizar("RACHA_USUARIOS_DS", $"DIAS_S = '{dias_seguido}',FECHA = '{DateTime.Today}'", $"USUARIO = '{usuario_sesion}'");
                                         h.Info($"! Tienes una racha de {dias_seguido} días seguidos ¡");
@@ -576,7 +584,7 @@ namespace MECANOGRAFIA.mecanografia
                         txtusuario_sesion.Clear();
                         txtcontra_sesion.Clear();
 
-                        this.Size = new Size(628, 381);
+                        this.Size = new Size(621, 366);
                         MenuOpciones.Visible = true;
                         this.FormBorderStyle = FormBorderStyle.FixedSingle;
                     }
@@ -601,19 +609,7 @@ namespace MECANOGRAFIA.mecanografia
 
         private void btncancelar_sesion_Click(object sender, EventArgs e)
         {
-            txtusuario_sesion.Clear();
-            txtcontra_sesion.Clear();
-        }
-
-        private void registro_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            this.Text = "   REGISTRARSE";
-            P_INICIOSESION.Visible = false;
-            P_REGISTRO.Visible = true;
-
-            P_REGISTRO.Size = new Size(230, 164);
-            P_REGISTRO.Location = new Point(-5, -4);
-            this.Size = new Size(240, 250);
+            txtusuario_sesion.Clear(); txtcontra_sesion.Clear();
         }
 
         private void OPTlogros_Click(object sender, EventArgs e)
@@ -635,14 +631,46 @@ namespace MECANOGRAFIA.mecanografia
             e.Handled = h.Onlystrings(e) ? false : true;
         }
 
+        private void rECORDSMODOPERSONALIZADOToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            mecanografia.RECORS_USUARIOS.FrmRecordsPersonalizado personalizado = new mecanografia.RECORS_USUARIOS.FrmRecordsPersonalizado();
+            this.AddOwnedForm(personalizado);
+            personalizado.ShowDialog();
+        }
+
+        private void pALABRASMALESCRITASToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            mecanografia.PALABRAS_MAL_ESCRITAS.FrmP_M_E PME = new mecanografia.PALABRAS_MAL_ESCRITAS.FrmP_M_E();
+            this.AddOwnedForm(PME);
+            PME.ShowDialog();
+        }
+
+        private void lblregistro_Click(object sender, EventArgs e)
+        {
+            MenuOpciones.Enabled = false;
+            this.Text = "   REGISTRARSE";
+            P_INICIOSESION.Visible = false;
+            P_REGISTRO.Visible = true;
+            this.FormBorderStyle = FormBorderStyle.FixedToolWindow;
+            P_REGISTRO.Size = new Size(230, 170);
+            P_REGISTRO.Location = new Point(-5, -4);
+            this.Size = new Size(240, 230);
+        }
+
+        private void OPTLogoSAEG_Click_1(object sender, EventArgs e)
+        {
+            h.Info("Este proyecto es de Mecanografia con el objetivo de escribir la maxima cantidad de palabras y que estas sean correctas.");
+            h.Info("Ademas de contar con diferentes tematicas y desafios para hacerlo entretenido");
+        }
+
         private void btnVolverASesion_Click(object sender, EventArgs e)
         {
-            this.Text = " INICIO DE SESION ";
+            MenuOpciones.Enabled = true;
+            this.Text = env.APPNAME + usuario_sesion;
+            P_REGISTRO.Visible = true;
             P_REGISTRO.Visible = false;
-            P_INICIOSESION.Visible = true;
-            P_INICIOSESION.Size = new Size(324, 244);
-            P_INICIOSESION.Location = new Point(-0, -2);
-            this.Size = new Size(340, 320);
+            this.Size = new Size(621, 366);
+            this.FormBorderStyle = FormBorderStyle.FixedSingle;
             txtusuario.Clear();
             txtcontra.Clear();
         }
@@ -650,7 +678,7 @@ namespace MECANOGRAFIA.mecanografia
         private void btnVolverAEscritura_Click(object sender, EventArgs e)
         {
             MenuOpciones.Enabled = true;
-            this.Text = env.APPNAME + usuario_sesion;
+            this.Text = env.APPNAME;
             MenuOpciones.Visible = true;
             P_INICIOSESION.Visible = false;
             P_ESCRITURA.Visible = true;
@@ -659,7 +687,7 @@ namespace MECANOGRAFIA.mecanografia
             RDsi.Checked = false;
             RDno.Checked = true;
 
-            this.Size = new Size(628, 381);
+            this.Size = new Size(621, 366);
             this.FormBorderStyle = FormBorderStyle.FixedSingle;
         }
 
@@ -715,16 +743,7 @@ namespace MECANOGRAFIA.mecanografia
 
         private void RDno_CheckedChanged(object sender, EventArgs e)
         {
-            if (RDno.Checked == true)
-            {
-                CBusuario.Visible = false;
-                RDsi.Checked = false;
-            }
-        }
-
-        private void OPTLogoSAEG_Click(object sender, EventArgs e)
-        {
-            h.Info("Este proyecto es de Mecanografia con el objetivo de escribir la maxima cantidad de palabras y que estas sean correctas");
+            if (RDno.Checked == true){ CBusuario.Visible = false; RDsi.Checked = false;}
         }
 
         private void rECORDSToolStripMenuItem_Click(object sender, EventArgs e)
@@ -746,23 +765,13 @@ namespace MECANOGRAFIA.mecanografia
             btnreiniciar.Enabled = false;
             txtpalabrasescritas.Enabled = true;
             txtpalabrasescritas.Focus();
-            RELOJ.Start();
             txtpalabrasescritas.Clear();
             correctas = 0; incorrectas = 0; pcompletadas = 0; L_omitidas = 0; L_PosM = 0; L_added = 0;
             lista_palabras();
             lblINCIAR_SESION.Enabled = false;
-        }
-
-        private void txtpalabrasescritas_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.Space)
-            {
-                WrongLetterPosition();
-                SkippedLetters();
-                LetterAddedWrongly();
-                verificar_palabras();
-                txtpalabrasescritas.Clear();
-            }
+            lblregistro.Enabled = false;
+            button1.Enabled = false;
+            RELOJ.Start();
         }
     }
 }

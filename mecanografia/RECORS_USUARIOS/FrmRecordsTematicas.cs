@@ -49,7 +49,7 @@ namespace MECANOGRAFIA.mecanografia.RECORS_USUARIOS
                         LA = Convert.ToInt32(r["L_ADDED_M"].ToString());
                         prec = r["PRECISION"].ToString();
                         fec = Convert.ToDateTime(r["FECHA"].ToString());
-                        DGVdatos.Rows.Add(ppm, c, i, LO, LPOS, LA, prec, fec);
+                        DGVdatos.Rows.Add(ppm, c, i, prec,LO, LPOS, LA,fec);
                     }
                     d.Dispose();
                 }

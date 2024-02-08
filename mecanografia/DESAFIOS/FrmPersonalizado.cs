@@ -95,7 +95,7 @@ namespace MECANOGRAFIA.mecanografia.DESAFIOS
             txtpalabrasescritas.Enabled = false;
             mecanografia.ESCRITURA esc = new mecanografia.ESCRITURA();
             esc = ((mecanografia.ESCRITURA)Owner);
-            this.Text = "Dificultad " + esc.usuario_sesion;
+            this.Text = "Modo Personalizado " + esc.usuario_sesion;
             btnreiniciar.Enabled = false;
         }
 
@@ -122,7 +122,6 @@ namespace MECANOGRAFIA.mecanografia.DESAFIOS
                 item.SubItems.Add(L_PosM.ToString());
                 item.SubItems.Add(L_added.ToString());
 
-
                 txtpalabrasescritas.Clear();
                 lblSEGUNDOS.Text = "60";
                 btnIniciar.Enabled = false;
@@ -140,15 +139,9 @@ namespace MECANOGRAFIA.mecanografia.DESAFIOS
                     LAddedM = datosLV.SubItems[6].Text;
                 }
 
-
                 mecanografia.ESCRITURA esc = new mecanografia.ESCRITURA();
-                if (esc.usuario_sesion != "")
-                {
-                    DB.guardar("RECORDS_PERSONALIZADO","USUARIO,NFILE,PPM,C,I,PREC,L_O,L_POS_M,L_ADDED",
-                        $"'{esc.usuario_sesion}','{Path.GetFileName(filePath)}',{Convert.ToInt32(ppm)},{Convert.ToInt32(pc)},{Convert.ToInt32(pi)}," +
-                        $"'{Math.Round(((float)correctas / pcompletadas) * 100, 3).ToString() + "%"}',{Convert.ToInt32(Lomitida)},{Convert.ToInt32(LPosM)}," +
-                        $"{Convert.ToInt32(LAddedM)}");
-                }
+                esc = ((mecanografia.ESCRITURA)Owner);
+                if (esc.usuario_sesion != string.Empty)DB.guardar("RECORDS_PERSONALIZADO", "USUARIO,NFILE,PPM,C,I,PREC,L_O,L_POS_M,L_ADDED",$"'{esc.usuario_sesion}','{Path.GetFileName(filePath)}',{Convert.ToInt32(ppm)},{Convert.ToInt32(pc)},{Convert.ToInt32(pi)},'{Math.Round(((float)correctas / pcompletadas) * 100, 3).ToString() + "%"}',{Convert.ToInt32(Lomitida)},{Convert.ToInt32(LPosM)},{Convert.ToInt32(LAddedM)}");
             }
         }
 
@@ -177,11 +170,11 @@ namespace MECANOGRAFIA.mecanografia.DESAFIOS
             btnreiniciar.Enabled = false;
             txtpalabrasescritas.Enabled = true;
             txtpalabrasescritas.Focus();
-            RELOJ.Start();
             txtpalabrasescritas.Clear();
             correctas = 0; incorrectas = 0; pcompletadas = 0; L_omitidas = 0; L_PosM = 0; L_added = 0;
             content = File.ReadAllText(filePath);
             txtpalabrasmostradas.Text = content;
+            RELOJ.Start();
         }
 
         private void txtpalabrasescritas_KeyDown(object sender, KeyEventArgs e)

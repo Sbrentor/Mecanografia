@@ -57,6 +57,7 @@
             // 
             this.lbl1.AutoSize = true;
             this.lbl1.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbl1.ForeColor = System.Drawing.Color.White;
             this.lbl1.Location = new System.Drawing.Point(433, 128);
             this.lbl1.Name = "lbl1";
             this.lbl1.Size = new System.Drawing.Size(104, 31);
@@ -65,6 +66,7 @@
             // 
             // txtpalabrasmostradas
             // 
+            this.txtpalabrasmostradas.BackColor = System.Drawing.Color.SteelBlue;
             this.txtpalabrasmostradas.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtpalabrasmostradas.Cursor = System.Windows.Forms.Cursors.No;
             this.txtpalabrasmostradas.Enabled = false;
@@ -83,6 +85,7 @@
             // 
             this.lblSEGUNDOS.AutoSize = true;
             this.lblSEGUNDOS.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblSEGUNDOS.ForeColor = System.Drawing.Color.White;
             this.lblSEGUNDOS.Location = new System.Drawing.Point(465, 98);
             this.lblSEGUNDOS.Name = "lblSEGUNDOS";
             this.lblSEGUNDOS.Size = new System.Drawing.Size(44, 31);
@@ -96,6 +99,7 @@
             // 
             // CMBdificultades
             // 
+            this.CMBdificultades.BackColor = System.Drawing.Color.SteelBlue;
             this.CMBdificultades.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.CMBdificultades.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.CMBdificultades.FormattingEnabled = true;
@@ -113,6 +117,7 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.ForeColor = System.Drawing.Color.White;
             this.label1.Location = new System.Drawing.Point(4, 330);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(234, 31);
@@ -121,48 +126,55 @@
             // 
             // toolStrip1
             // 
+            this.toolStrip1.BackColor = System.Drawing.Color.Lavender;
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.BTNsalir});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(617, 28);
+            this.toolStrip1.Size = new System.Drawing.Size(617, 25);
             this.toolStrip1.TabIndex = 21;
             this.toolStrip1.Text = "toolStrip1";
             // 
             // BTNsalir
             // 
-            this.BTNsalir.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.BTNsalir.Font = new System.Drawing.Font("Humnst777 Blk BT", 9F);
             this.BTNsalir.Image = global::MECANOGRAFIA.Properties.Resources.exit_24px;
             this.BTNsalir.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.BTNsalir.Name = "BTNsalir";
-            this.BTNsalir.Size = new System.Drawing.Size(73, 25);
+            this.BTNsalir.Size = new System.Drawing.Size(61, 22);
             this.BTNsalir.Text = "SALIR";
             this.BTNsalir.Click += new System.EventHandler(this.BTNsalir_Click);
             // 
             // btnIniciar
             // 
+            this.btnIniciar.FlatAppearance.BorderColor = System.Drawing.Color.CadetBlue;
+            this.btnIniciar.FlatAppearance.BorderSize = 0;
+            this.btnIniciar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnIniciar.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnIniciar.Image = global::MECANOGRAFIA.Properties.Resources.boton_de_play;
             this.btnIniciar.Location = new System.Drawing.Point(538, 101);
             this.btnIniciar.Name = "btnIniciar";
             this.btnIniciar.Size = new System.Drawing.Size(34, 33);
             this.btnIniciar.TabIndex = 18;
-            this.btnIniciar.UseVisualStyleBackColor = true;
+            this.btnIniciar.UseVisualStyleBackColor = false;
             this.btnIniciar.Click += new System.EventHandler(this.btnIniciar_Click);
             // 
             // btnreiniciar
             // 
+            this.btnreiniciar.FlatAppearance.BorderSize = 0;
+            this.btnreiniciar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnreiniciar.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnreiniciar.Image = global::MECANOGRAFIA.Properties.Resources.sincronizacion;
             this.btnreiniciar.Location = new System.Drawing.Point(575, 101);
             this.btnreiniciar.Name = "btnreiniciar";
             this.btnreiniciar.Size = new System.Drawing.Size(31, 33);
             this.btnreiniciar.TabIndex = 15;
-            this.btnreiniciar.UseVisualStyleBackColor = true;
+            this.btnreiniciar.UseVisualStyleBackColor = false;
             this.btnreiniciar.Click += new System.EventHandler(this.btnreiniciar_Click);
             // 
             // CMBFalsaDificultad
             // 
+            this.CMBFalsaDificultad.BackColor = System.Drawing.Color.SteelBlue;
             this.CMBFalsaDificultad.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.CMBFalsaDificultad.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.CMBFalsaDificultad.FormattingEnabled = true;
@@ -177,7 +189,7 @@
             // 
             // lvPalabras
             // 
-            this.lvPalabras.BackColor = System.Drawing.Color.Brown;
+            this.lvPalabras.BackColor = System.Drawing.Color.SteelBlue;
             this.lvPalabras.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.PALABRAS_POR_MINUTO,
             this.PCORRECTAS,
@@ -241,7 +253,7 @@
             // 
             // txtpalabrasescritas
             // 
-            this.txtpalabrasescritas.BackColor = System.Drawing.SystemColors.Control;
+            this.txtpalabrasescritas.BackColor = System.Drawing.Color.SteelBlue;
             this.txtpalabrasescritas.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtpalabrasescritas.Font = new System.Drawing.Font("Humnst777 Blk BT", 15.75F);
             this.txtpalabrasescritas.ForeColor = System.Drawing.SystemColors.WindowText;
@@ -257,6 +269,7 @@
             // FrmDificultades
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
+            this.BackColor = System.Drawing.Color.Navy;
             this.ClientSize = new System.Drawing.Size(617, 398);
             this.Controls.Add(this.txtpalabrasescritas);
             this.Controls.Add(this.lvPalabras);
